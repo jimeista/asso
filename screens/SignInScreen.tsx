@@ -39,15 +39,18 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
       if(!password) setError(state => [...state, {type: 'password', message: 'Необходимо ввести пароль'}])
       if(phone && password){
         const res = await axios.post('https://asso-kz.herokuapp.com/api/log_in/', { mobile_phone: phone, password} )
-        toast.show({
-          status: 'success',
-          title: 'Успешная авторизация',
-          placement: 'top'
-        })
-        
-        setTimeout(() => {
-          navigation.navigate('Home')
-        }, 3000)
+
+        if(res.status === 200) {
+          toast.show({
+            status: 'success',
+            title: 'Успешная авторизация',
+            placement: 'top'
+          })
+          
+          setTimeout(() => {
+            navigation.navigate('Home')
+          }, 3000)
+        }
       }
       setLoading(false)
     }catch(err : any){
